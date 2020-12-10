@@ -1,0 +1,12 @@
+item {
+  id: 1
+  name: 'Erithacus_Rubecula'
+}
+item {
+  id: 2
+  name: 'Periparus_ater'
+}
+item {
+  id: 3
+  name: 'Pica_pica'
+}

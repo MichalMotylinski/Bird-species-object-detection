@@ -1,0 +1,21 @@
+{
+    "DETECTION": {
+        "0": {
+            "label": "Erithacus_Rubecula",
+            "shortcut": "1"
+        },
+        "1": {
+            "label": "Periparus_ater",
+            "shortcut": "2"
+        },
+        "2": {
+            "label": "Pica_pica",
+            "shortcut": "3"
+        },
+        "3": {
+            "label": "Turdus_merula",
+            "shortcut": "4"
+        }
+    },
+    "SEGMENTATION": {}
+}
