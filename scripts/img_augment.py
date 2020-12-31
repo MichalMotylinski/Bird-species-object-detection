@@ -1,12 +1,12 @@
 import os
 import argparse
-from shutil import copyfile, rmtree
 import imageio
 import imgaug as ia
 import imgaug.augmenters as iaa
 import xml.etree.ElementTree
 import random
-import PIL
+from shutil import copyfile, rmtree
+from PIL import Image
 
 
 # Calculate new bounding box coordinates
@@ -38,10 +38,10 @@ def copy_images(xml_input_dir, img_input_dir, img_dir, xml_dir):
         copyfile(os.path.join(img_input_dir, image), os.path.join(img_dir, image))
 
 
-def augment(img_dir, xml_dir):
+def augment(img_dir, xml_dir, flip, idx):
     # Create augmented files
     for file in os.listdir(img_dir):
-        if "jpg" in file:
+        if "jpg" in file and "aug" not in file:
             # Set variables to save information if augmentation method was applied
             rand_fliph = random.randint(0, 1)
             rand_flipv = random.randint(0, 1)
@@ -49,29 +49,26 @@ def augment(img_dir, xml_dir):
             if rand_fliph == 0 and rand_flipv == 0:
                 rand_flipv = 1
 
-            # Combine augmentation methods
-            aug = iaa.Sequential([iaa.Fliplr(rand_fliph), iaa.Flipud(rand_flipv)])
-
             # Load image
             image = imageio.imread(os.path.join(img_dir, file))
 
             # Apply augmentation
-            image_aug = aug(image=image)
+            image_aug = flip(image=image)
 
             # Save augmented image
-            filename = file.split(".")[0] + "_aug.jpg"
-            im = PIL.Image.fromarray(image_aug)
+            filename = file.split(".")[0] + f"_aug_{idx}.jpg"
+            im = Image.fromarray(image_aug)
             rgb_im = im.convert('RGB')
             rgb_im.save(os.path.join(img_dir, filename))
 
             # Now create new xml file with bounding box coordinates for augmented image
             # Copy original file and rename it
-            filename = file.split(".")[0] + "_aug.xml"
+            filename = file.split(".")[0] + f"_aug_{idx}.xml"
             copyfile(os.path.join(xml_dir, file.split(".")[0] + ".xml"), os.path.join(xml_dir, filename))
 
             # Open image and get its attributes
             image = file.split(".")[0] + ".jpg"
-            ims = PIL.Image.open(os.path.join(img_dir, image))
+            ims = Image.open(os.path.join(img_dir, image))
             width, height = ims.size
 
             # Open and read new xml file
@@ -98,9 +95,12 @@ def augment(img_dir, xml_dir):
                                     ymax = box.text
 
                             # Change values according to method applied
-                            if rand_fliph == 1:
+                            if idx == 1:
                                 xmin, xmax = bnb_flip(width, xmax, xmin)
-                            if rand_flipv == 1:
+                            if idx == 2:
+                                ymin, ymax = bnb_flip(height, ymax, ymin)
+                            if idx == 3:
+                                xmin, xmax = bnb_flip(width, xmax, xmin)
                                 ymin, ymax = bnb_flip(height, ymax, ymin)
 
                             # Save new variables
@@ -115,9 +115,9 @@ def augment(img_dir, xml_dir):
                                     box.text = ymax
                 # Change path and filename in the xml file pto match the name of the augmented image
                 if child.tag == "path":
-                    child.text = child.text.split(".")[0] + "_aug.jpg"
+                    child.text = child.text.split(".")[0] + f"_aug_{idx}.jpg"
                 if child.tag == "filename":
-                    child.text = child.text.split(".")[0] + "_aug.jpg"
+                    child.text = child.text.split(".")[0] + f"_aug_{idx}.jpg"
                     break
             # Save xml file
             tree.write(os.path.join(xml_dir, filename))
@@ -158,4 +158,12 @@ output_dir, img_dir, xml_dir = clean_dir(output_dir)
 copy_images(xml_input_dir, img_input_dir, img_dir, xml_dir)
 
 # Apply augmentation
-augment(img_dir, xml_dir)
+for i in range(1, 4):
+    aug = ""
+    if i == 1:
+        aug = iaa.Fliplr(1)
+    if i == 2:
+        aug = iaa.Flipud(1)
+    if i == 3:
+        aug = iaa.Sequential([iaa.Fliplr(1), iaa.Flipud(1)])
+    augment(img_dir, xml_dir, aug, i)
