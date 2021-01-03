@@ -1,0 +1,7 @@
+ , ,Erithacus_Rubecula,Erithacus_Rubecula,Periparus_ater,Periparus_ater,Pica_pica,Pica_pica,Turdus_merula,Turdus_merula,Total,Total,Total
+Model,Steps,Detected,All,Detected,All,Detected,All,Detected,All,Detected,All,Detection rate
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_1_31,30k,26,34,17,23,20,27,14,24,77,108,71.30%
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_2_26,25k,26,34,20,23,21,27,24,24,91,108,84.26%
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_3_26,25k,27,34,19,23,21,27,19,24,86,108,79.63%
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_3_24,23k,22,34,18,23,21,27,19,24,80,108,74.07%
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_4_26,25k,28,34,19,23,19,27,20,24,86,108,79.63%

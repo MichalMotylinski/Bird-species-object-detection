@@ -1,0 +1,6 @@
+Model,Steps,Base learn rate ,Warmup learn rate,Warmup steps,Classes,Train images,Test images,Output size,Augmentation,IoU 0.50,IoU 0.75,Total validation loss
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_1,30k,0.0003,4E-05,2500,4,2880,320,1024x1024,None,0.845015,0.649131,0.21453
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_2,25k,0.0007,4E-05,2500,4,5760,640,768x1024,Random(Horizontal flip + Vertical flip),0.8542,0.7126,0.1977
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_3,25k,0.0007,4E-05,2500,4,5760,640,1024x1024,Random(Horizontal flip + Vertical flip),0.8493,0.7047,0.2061
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_3,23k,0.0007,4E-05,2500,4,5760,640,1024x1024,Random(Horizontal flip + Vertical flip),0.861,0.7142,0.197
+faster_rcnn_resnet101_v1_1024x1024_coco17_tpu-8_4,25k,0.0007,4E-05,3000,4,11520,1280,1024x1024,Horizontal flip + Vertical flip + both,0.8262,0.6888,0.2105
